@@ -45,9 +45,13 @@ func race(delta):
 	
 	var slope_velocity = (Vector3.DOWN * gravity).slide(normal) * delta
 	velocity = velocity.slide(normal) + slope_velocity
-	var move_velocity = forward().slide(Vector3.UP) * move_speed * -input.z * delta
-	velocity += move_velocity
+	if velocity.length() < move_speed:
+		var move_velocity = forward().slide(Vector3.UP) * move_speed * -input.z * delta
+		velocity += move_velocity
 	var side_friction_velocity = -right * right.dot(velocity) * delta * side_friction
 	velocity += side_friction_velocity
 	move((velocity) * delta)
 	rotate(quaternion * Vector3.UP, input.x * delta * rotation_speed)
+
+func collide():
+	pass
