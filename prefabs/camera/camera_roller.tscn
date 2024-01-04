@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://c6s2t3vrpr64d"]
+
+[ext_resource type="Script" path="res://code/scripts/camera_roller.gd" id="1_jlfxw"]
+
+[node name="Camera3D" type="Camera3D"]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 9.42549, 2.71334, 13.1019)
+far = 500.0
+script = ExtResource("1_jlfxw")
+
+[node name="raycast" type="RayCast3D" parent="."]

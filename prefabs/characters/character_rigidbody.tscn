@@ -41,7 +41,7 @@ shadow_mesh = SubResource("ArrayMesh_rnqgs")
 radius = 0.3
 height = 1.5
 
-[node name="character_test" type="RigidBody3D"]
+[node name="character_rigidbody" type="RigidBody3D"]
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
