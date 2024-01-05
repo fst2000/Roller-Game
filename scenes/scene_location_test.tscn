@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://udi68deqk1ym" path="res://prefabs/locations/location_test.tscn" id="1_f1pep"]
 [ext_resource type="PackedScene" uid="uid://c6s2t3vrpr64d" path="res://prefabs/camera/camera_roller.tscn" id="2_2fuaw"]
-[ext_resource type="PackedScene" uid="uid://c7ly5s42stwcr" path="res://prefabs/characters/roller_test.tscn" id="3_ki1v0"]
+[ext_resource type="PackedScene" uid="uid://dd11h1ylkasg2" path="res://prefabs/characters/roller_base.tscn" id="3_7104o"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vos38"]
 
@@ -32,7 +32,9 @@ transform = Transform3D(0.707107, 0.5, -0.5, 0, 0.707107, 0.707107, 0.707107, -0
 shadow_enabled = true
 
 [node name="Camera3D" parent="." node_paths=PackedStringArray("roller") instance=ExtResource("2_2fuaw")]
-roller = NodePath("../roller_test")
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -5.2534, 2.71334, 13.1019)
+current = true
+roller = NodePath("../roller_base")
 
-[node name="roller_test" parent="." instance=ExtResource("3_ki1v0")]
-transform = Transform3D(-0.266078, 0, -0.963952, 0, 1, 0, 0.963952, 0, -0.266078, 0, 2.77378, 7.63217)
+[node name="roller_base" parent="." instance=ExtResource("3_7104o")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -6.46968, 0, 7.74393)

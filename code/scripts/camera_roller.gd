@@ -3,7 +3,7 @@ extends Camera3D
 @export var roller : Node3D
 @onready var raycast = $raycast
 var camera_lerp = 2
-var distance = 3
+var distance = 2
 var height = 1
 func _process(delta):
 	var roller_velocity = roller.get_velocity()
@@ -16,11 +16,11 @@ func _process(delta):
 	
 	
 	if roller_velocity.length() > 0.01:
-		var pre_check_vector = quaternion * Vector3.FORWARD * 0.3
-		var ray_vector = global_pos - look_point - pre_check_vector
-		raycast.global_position = look_point
-		raycast.target_position = quaternion.inverse() * ray_vector
 		if raycast.is_colliding():
+			var pre_check_vector = quaternion * Vector3.FORWARD * 0.5
+			var ray_vector = global_pos - look_point - pre_check_vector
+			raycast.global_position = look_point
+			raycast.target_position = quaternion.inverse() * ray_vector
 			var collision_point = raycast.get_collision_point() + pre_check_vector
 			var final_pos = look_point + ray_vector.normalized() * lerp(look_point.distance_to(global_position), look_point.distance_to(collision_point), delta * 20)
 			global_position = final_pos
