@@ -7,7 +7,8 @@ func _init(roller):
 	roller.anim_tree["parameters/conditions/is_idle"] = true
 	
 func update(delta):
-	roller.velocity = Vector3.ZERO
+	roller.velocity.x = 0
+	roller.velocity.z = 0
 
 func next_state():
 	if roller.floor_check():
