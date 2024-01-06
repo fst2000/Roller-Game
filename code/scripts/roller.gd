@@ -4,6 +4,8 @@ extends Node3D
 @onready var anim_player = $AnimationPlayer
 @onready var anim_tree = $AnimationTree
 @onready var state = IdleState.new(self)
+@onready var collision_rays = $collision_rays
+
 var gravity = 10
 var jump_force = 5
 var move_speed = 15
@@ -25,8 +27,10 @@ func _physics_process(delta):
 		state = next_state
 	state.update(delta)
 	
-func move(velocity : Vector3):
-	global_position += velocity 
+	collide()
+	
+func move(move_velocity : Vector3):
+	global_position += move_velocity 
 
 func look_at_direction(direction : Vector3, axis : Vector3):
 	look_at(global_position + direction, axis)
@@ -56,23 +60,31 @@ func race(delta):
 	var point = ray.get_collision_point()
 	global_position = point
 	var normal = ray.get_collision_normal()
-	var axis_lerp = lerp(quaternion * Vector3.UP, normal, delta * velocity.length() * 0.5)
+	var up = quaternion * Vector3.UP
+	var axis_lerp = lerp(up, normal, delta * velocity.length() * 0.5)
 	var floor_forward = axis_lerp.cross(right)
 	look_at_direction(floor_forward, axis_lerp)
 	
 	var slope_velocity = (Vector3.DOWN * gravity).slide(normal) * delta
 	velocity = velocity.slide(normal) + slope_velocity
 	if velocity.length() < move_speed:
-		var move_velocity = forward().slide(Vector3.UP) * move_speed * -input.z * delta
+		var move_velocity = forward() * max(0, up.dot(Vector3.UP)) * move_speed * -input.z * delta
 		velocity += move_velocity * move_smoothness
 	var side_friction_velocity = -right * right.dot(velocity) * delta * side_friction
 	velocity += side_friction_velocity
 	move((velocity) * delta)
 	rotate(quaternion * Vector3.UP, input.x * delta * race_rotation_speed)
 
-func shape_local_collision_point(shape : ShapeCast3D) -> Vector3:
-	var global_point = shape.get_collision_point(0)
-	var local_point = quaternion.inverse() * (global_point - global_position)
-	var shape_local_position = shape.position + shape.target_position
-	var shape_point = local_point - shape_local_position
-	return shape_point
+func collide():
+	var multi_rays = collision_rays.get_colliding_rays()
+	if multi_rays:
+		var multi_ray = multi_rays[0]
+		var point = multi_ray.get_collision_point()
+		var normal = multi_ray.get_collision_normal()
+		var ray_length = multi_ray.get_ray_length()
+		var ray_position = multi_ray.global_position
+		var from_ray_to_point = point - ray_position
+		var ray_vector = from_ray_to_point.normalized() * ray_length
+		var move_vector = from_ray_to_point - ray_vector
+		move(move_vector)
+		velocity = velocity.slide(normal.normalized())

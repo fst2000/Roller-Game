@@ -1,8 +1,11 @@
-[gd_scene load_steps=31 format=3 uid="uid://dd11h1ylkasg2"]
+[gd_scene load_steps=40 format=3 uid="uid://dd11h1ylkasg2"]
 
 [ext_resource type="PackedScene" uid="uid://ch7sr5qc4a46w" path="res://models/characters/roller_base.blend" id="1_q7h8c"]
 [ext_resource type="Script" path="res://code/scripts/roller.gd" id="2_d4v8r"]
 [ext_resource type="AnimationNodeBlendTree" uid="uid://d2rcxl5bldu55" path="res://prefabs/characters/animations/slide_blend_tree.tres" id="3_edxgo"]
+[ext_resource type="Script" path="res://code/scripts/multi_ray.gd" id="3_jxm30"]
+[ext_resource type="Script" path="res://code/scripts/collision_rays.gd" id="3_mcgfe"]
+[ext_resource type="Script" path="res://code/scripts/animation_tree.gd" id="6_xgyme"]
 
 [sub_resource type="Animation" id="Animation_lwcr4"]
 resource_name = "jump"
@@ -1373,6 +1376,8 @@ _data = {
 "slide_right": SubResource("Animation_ivmqt")
 }
 
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_e8ewc"]
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_vpela"]
 animation = &"fall"
 
@@ -1432,72 +1437,177 @@ advance_condition = &"is_jump"
 advance_mode = 2
 advance_condition = &"is_idle"
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lx4ml"]
+advance_mode = 2
+advance_condition = &"is_crash_start"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_etw8h"]
+advance_mode = 2
+advance_condition = &"is_crash_start"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dv25d"]
+advance_mode = 2
+advance_condition = &"is_crash_start"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rtvl2"]
+advance_mode = 2
+advance_condition = &"is_crash_start"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_r8stj"]
+advance_mode = 2
+advance_condition = &"is_crash_end"
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_q32x5"]
+states/Start/position = Vector2(146, 100)
+states/crash/node = SubResource("AnimationNodeBlendTree_e8ewc")
+states/crash/position = Vector2(559, 83.4899)
 states/fall/node = SubResource("AnimationNodeAnimation_vpela")
-states/fall/position = Vector2(416, 37)
+states/fall/position = Vector2(421, 8)
 states/idle/node = SubResource("AnimationNodeAnimation_0o60a")
-states/idle/position = Vector2(310, 100)
+states/idle/position = Vector2(273, 100)
 states/jump/node = SubResource("AnimationNodeAnimation_s2jo4")
-states/jump/position = Vector2(336, 37)
+states/jump/position = Vector2(327, 8)
 states/land/node = SubResource("AnimationNodeAnimation_thqc3")
-states/land/position = Vector2(510, 37)
+states/land/position = Vector2(527, 8)
 states/race/node = ExtResource("3_edxgo")
-states/race/position = Vector2(422, 100)
-transitions = ["idle", "jump", SubResource("AnimationNodeStateMachineTransition_igy5f"), "idle", "fall", SubResource("AnimationNodeStateMachineTransition_1dhmv"), "idle", "race", SubResource("AnimationNodeStateMachineTransition_k6ssj"), "jump", "fall", SubResource("AnimationNodeStateMachineTransition_lkjxx"), "fall", "land", SubResource("AnimationNodeStateMachineTransition_wsqnj"), "land", "race", SubResource("AnimationNodeStateMachineTransition_8421j"), "race", "fall", SubResource("AnimationNodeStateMachineTransition_0qr1r"), "Start", "idle", SubResource("AnimationNodeStateMachineTransition_47fl7"), "race", "jump", SubResource("AnimationNodeStateMachineTransition_h56yc"), "race", "idle", SubResource("AnimationNodeStateMachineTransition_5lboi")]
-graph_offset = Vector2(1.32322e-05, -88.5101)
+states/race/position = Vector2(421, 135)
+transitions = ["idle", "jump", SubResource("AnimationNodeStateMachineTransition_igy5f"), "idle", "fall", SubResource("AnimationNodeStateMachineTransition_1dhmv"), "idle", "race", SubResource("AnimationNodeStateMachineTransition_k6ssj"), "jump", "fall", SubResource("AnimationNodeStateMachineTransition_lkjxx"), "fall", "land", SubResource("AnimationNodeStateMachineTransition_wsqnj"), "land", "race", SubResource("AnimationNodeStateMachineTransition_8421j"), "race", "fall", SubResource("AnimationNodeStateMachineTransition_0qr1r"), "Start", "idle", SubResource("AnimationNodeStateMachineTransition_47fl7"), "race", "jump", SubResource("AnimationNodeStateMachineTransition_h56yc"), "race", "idle", SubResource("AnimationNodeStateMachineTransition_5lboi"), "race", "crash", SubResource("AnimationNodeStateMachineTransition_lx4ml"), "land", "crash", SubResource("AnimationNodeStateMachineTransition_etw8h"), "fall", "crash", SubResource("AnimationNodeStateMachineTransition_dv25d"), "jump", "crash", SubResource("AnimationNodeStateMachineTransition_rtvl2"), "crash", "race", SubResource("AnimationNodeStateMachineTransition_r8stj")]
+graph_offset = Vector2(39.528, -41.5667)
 
 [node name="roller_base" instance=ExtResource("1_q7h8c")]
 script = ExtResource("2_d4v8r")
 
 [node name="Skeleton3D" parent="Armature" index="0"]
-bones/0/position = Vector3(0, 0.729482, -0.0775893)
-bones/0/rotation = Quaternion(-0.701381, 0.0898046, 0.0898046, 0.701381)
-bones/1/rotation = Quaternion(0.772475, 0.00374617, 0.147656, 0.617629)
-bones/2/rotation = Quaternion(0.0988498, 0.0287533, -0.000798488, 0.994687)
-bones/3/rotation = Quaternion(-0.0228678, 0.254751, -0.0303317, 0.96626)
-bones/4/rotation = Quaternion(-0.157374, 0.167956, 0.948963, -0.215623)
+bones/0/position = Vector3(0, 0.76927, 0)
+bones/2/rotation = Quaternion(0.0519067, 0, 0, 0.998652)
+bones/3/rotation = Quaternion(-0.0226298, 0, 0, 0.999744)
+bones/4/rotation = Quaternion(0.0186957, -0.0123652, 0.989719, -0.141259)
 bones/4/scale = Vector3(0.999999, 1, 1)
-bones/5/rotation = Quaternion(0.497376, 0.0257753, 0.0515851, 0.865617)
 bones/5/scale = Vector3(1, 1, 1)
 bones/6/rotation = Quaternion(-0.115014, -0.0105412, -0.0906583, 0.989162)
-bones/7/rotation = Quaternion(0.165528, -0.177483, 0.9641, 0.107755)
-bones/8/rotation = Quaternion(0.342146, 0.196935, -0.0802675, 0.915265)
+bones/7/rotation = Quaternion(0.0709318, -0.0352521, 0.987175, 0.138604)
+bones/8/rotation = Quaternion(0.201129, 0.20674, -0.0498504, 0.956201)
 bones/9/rotation = Quaternion(-0.125699, -0.116515, 0.0751451, 0.982332)
-bones/10/position = Vector3(0.0638072, 0.00439917, 0.014731)
-bones/10/rotation = Quaternion(-0.389126, 0.414744, -0.630855, 0.527816)
+bones/10/rotation = Quaternion(-0.640025, 0.272038, -0.509353, 0.506875)
 bones/10/scale = Vector3(1, 1, 1)
-bones/11/rotation = Quaternion(0.0176631, -0.00300476, 0.214464, 0.976568)
+bones/11/rotation = Quaternion(0.118713, 0.049767, 0.323943, 0.937279)
 bones/11/scale = Vector3(1, 1, 1)
-bones/12/rotation = Quaternion(0.0158032, 0.146061, -0.197636, 0.969204)
+bones/12/rotation = Quaternion(-0.0379818, -0.0222061, -0.140433, 0.989112)
 bones/12/scale = Vector3(1, 1, 1)
-bones/13/position = Vector3(-0.0638072, -0.00439916, 0.014731)
-bones/13/rotation = Quaternion(0.583629, -0.39838, 0.667518, -0.234711)
+bones/13/rotation = Quaternion(0.506885, -0.507919, 0.641982, -0.270083)
 bones/13/scale = Vector3(1, 1, 1)
-bones/14/rotation = Quaternion(-0.0205097, -0.000660215, 0.515594, 0.856587)
-bones/15/rotation = Quaternion(0.0150938, 0.157845, -0.213332, 0.964026)
+bones/14/rotation = Quaternion(-0.117864, -0.0594405, 0.324253, 0.936715)
+bones/15/rotation = Quaternion(0.0370722, 0.0286078, -0.140676, 0.988948)
 bones/15/scale = Vector3(1, 1, 1)
 
 [node name="AnimationPlayer" parent="." index="1"]
 playback_default_blend_time = 0.1
 
-[node name="floor_ray" type="RayCast3D" parent="." index="2"]
+[node name="collision_rays" type="Node3D" parent="." index="2"]
+script = ExtResource("3_mcgfe")
+
+[node name="rays_up" type="Node3D" parent="collision_rays" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("3_jxm30")
+
+[node name="ray_up" type="RayCast3D" parent="collision_rays/rays_up" index="0"]
+target_position = Vector3(0, 0.5, 0)
+
+[node name="rays_mid_front" type="Node3D" parent="collision_rays" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("3_jxm30")
+
+[node name="ray_mid_front" type="RayCast3D" parent="collision_rays/rays_mid_front" index="0"]
+target_position = Vector3(0, 0, 0.5)
+hit_back_faces = false
+
+[node name="ray_mid_front_r" type="RayCast3D" parent="collision_rays/rays_mid_front" index="1"]
+transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, 0, 0, 0)
+target_position = Vector3(0, 0, 0.5)
+hit_back_faces = false
+
+[node name="ray_mid_front_l" type="RayCast3D" parent="collision_rays/rays_mid_front" index="2"]
+transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 0, 0, 0)
+target_position = Vector3(0, 0, 0.5)
+hit_back_faces = false
+
+[node name="rays_mid_back" type="Node3D" parent="collision_rays" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("3_jxm30")
+
+[node name="ray_mid_back" type="RayCast3D" parent="collision_rays/rays_mid_back" index="0"]
+transform = Transform3D(1, 0, 0, 0, -1, -8.74228e-08, 0, 8.74228e-08, -1, 0, 0, 0)
+target_position = Vector3(0, 0, 0.5)
+hit_back_faces = false
+
+[node name="ray_mid_back_r" type="RayCast3D" parent="collision_rays/rays_mid_back" index="1"]
+transform = Transform3D(0.5, 0, -0.866025, -7.57103e-08, -1, -4.37114e-08, -0.866025, 8.74228e-08, -0.5, 0, 0, 0)
+target_position = Vector3(0, 0, 0.5)
+hit_back_faces = false
+
+[node name="ray_mid_back_l" type="RayCast3D" parent="collision_rays/rays_mid_back" index="2"]
+transform = Transform3D(0.5, 0, 0.866025, 7.57103e-08, -1, -4.37114e-08, 0.866025, 8.74228e-08, -0.5, 0, 0, 0)
+target_position = Vector3(0, 0, 0.5)
+hit_back_faces = false
+
+[node name="rays_low_front" type="Node3D" parent="collision_rays" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+script = ExtResource("3_jxm30")
+
+[node name="ray_low_front" type="RayCast3D" parent="collision_rays/rays_low_front" index="0"]
+target_position = Vector3(0, 0, 0.5)
+hit_back_faces = false
+
+[node name="ray_low_front_r" type="RayCast3D" parent="collision_rays/rays_low_front" index="1"]
+transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, 0, 0, 0)
+target_position = Vector3(0, 0, 0.5)
+hit_back_faces = false
+
+[node name="ray_low_front_l" type="RayCast3D" parent="collision_rays/rays_low_front" index="2"]
+transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, 0, 0, 0)
+target_position = Vector3(0, 0, 0.5)
+hit_back_faces = false
+
+[node name="rays_low_back" type="Node3D" parent="collision_rays" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+script = ExtResource("3_jxm30")
+
+[node name="ray_low_front" type="RayCast3D" parent="collision_rays/rays_low_back" index="0"]
+transform = Transform3D(1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0)
+target_position = Vector3(0, 0, 0.5)
+hit_back_faces = false
+
+[node name="ray_low_front_r" type="RayCast3D" parent="collision_rays/rays_low_back" index="1"]
+transform = Transform3D(0.5, 0, -0.866025, 7.57103e-08, -1, 4.37114e-08, -0.866025, -8.74228e-08, -0.5, 0, 0, 0)
+target_position = Vector3(0, 0, 0.5)
+hit_back_faces = false
+
+[node name="ray_low_front_l" type="RayCast3D" parent="collision_rays/rays_low_back" index="2"]
+transform = Transform3D(0.5, 0, 0.866025, -7.57103e-08, -1, 4.37114e-08, 0.866025, -8.74228e-08, -0.5, 0, 0, 0)
+target_position = Vector3(0, 0, 0.5)
+hit_back_faces = false
+
+[node name="floor_ray" type="RayCast3D" parent="." index="3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 target_position = Vector3(0, -0.75, 0)
 
-[node name="AnimationTree" type="AnimationTree" parent="." index="3"]
+[node name="AnimationTree" type="AnimationTree" parent="." index="4"]
 libraries = {
 "": SubResource("AnimationLibrary_3c50v")
 }
 tree_root = SubResource("AnimationNodeStateMachine_q32x5")
 anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/is_crash_end = false
+parameters/conditions/is_crash_start = false
 parameters/conditions/is_falling = false
-parameters/conditions/is_idle = false
+parameters/conditions/is_idle = true
 parameters/conditions/is_jump = false
 parameters/conditions/is_not_jump = false
 parameters/conditions/is_on_floor = false
-parameters/conditions/is_race = true
+parameters/conditions/is_race = false
 parameters/race/accelerate_back_blend/blend_amount = 1.0
 parameters/race/accelerate_blend/blend_amount = 1.0
 parameters/race/race_blend/blend_amount = 1.0
 parameters/race/race_slide_blend/blend_amount = 0.52
 parameters/race/slide_blend/blend_amount = 0.0
+script = ExtResource("6_xgyme")

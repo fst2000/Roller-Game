@@ -8,7 +8,6 @@ func _init(roller):
 	roller.anim_tree["parameters/conditions/is_on_floor"] = false
 	
 func update(delta):
-	print("fall")
 	roller.fall(delta)
 
 func next_state():

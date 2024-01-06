@@ -22,7 +22,7 @@ func _process(delta):
 			raycast.global_position = look_point
 			raycast.target_position = quaternion.inverse() * ray_vector
 			var collision_point = raycast.get_collision_point() + pre_check_vector
-			var final_pos = look_point + ray_vector.normalized() * lerp(look_point.distance_to(global_position), look_point.distance_to(collision_point), delta * 20)
+			var final_pos = look_point + ray_vector.normalized() * look_point.distance_to(collision_point)
 			global_position = final_pos
 		else: global_position = global_pos
 		look_at_direction(slide_lerp_direction, lerp_axis)

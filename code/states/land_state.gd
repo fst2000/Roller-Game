@@ -14,7 +14,6 @@ func update(delta):
 
 func next_state():
 	if time > 0.25:
-		print(time)
 		return RaceState.new(roller) 
 	return self
 
