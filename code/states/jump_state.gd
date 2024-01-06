@@ -4,8 +4,8 @@ var roller
 
 func _init(roller):
 	self.roller = roller
-	roller.anim_tree["parameters/conditions/is_jump"] = true
-	roller.anim_tree["parameters/conditions/is_not_jump"] = false
+	roller.anim_tree.set_condition("is_jump", true)
+	roller.anim_tree.set_condition("is_not_jump", false)
 	roller.jump()
 	
 func update(delta):
@@ -18,5 +18,5 @@ func next_state():
 	return self
 
 func exit():
-	roller.anim_tree["parameters/conditions/is_jump"] = false
-	roller.anim_tree["parameters/conditions/is_not_jump"] = true
+	roller.anim_tree.set_condition("is_jump", false)
+	roller.anim_tree.set_condition("is_not_jump", true)

@@ -8,7 +8,8 @@ func _init(roller):
 	roller.anim_tree.set_condition("is_idle", false)
 func update(delta):
 	var up = roller.quaternion * Vector3.UP
-	var accelerate_blend = abs(roller.roller_input.input().z) * max(0, up.dot(Vector3.UP))
+	var velocity_length = roller.velocity.length()
+	var accelerate_blend = abs(roller.roller_input.input().z) * max(0, up.dot(Vector3.UP)) * velocity_length * 0.2
 	var right = roller.quaternion * Vector3.RIGHT
 	var slide_blend = 0.5 + ((-roller.velocity.normalized().dot(right) * 0.5) * roller.velocity.length() * 0.2)
 	var race_slide_blend = abs(0.5 - slide_blend) * 2 - accelerate_blend * 0.7

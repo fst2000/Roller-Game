@@ -4,7 +4,7 @@ var roller
 
 func _init(roller):
 	self.roller = roller
-	roller.anim_tree["parameters/conditions/is_idle"] = true
+	roller.anim_tree.set_condition("is_idle", true)
 	
 func update(delta):
 	roller.velocity.x = 0
