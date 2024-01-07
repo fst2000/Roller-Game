@@ -1,6 +1,6 @@
 extends Node3D
 
-@onready var ray = $floor_ray
+@onready var floor_ray = $floor_ray
 @onready var anim_player = $AnimationPlayer
 @onready var anim_tree = $AnimationTree
 @onready var state = IdleState.new(self)
@@ -39,11 +39,11 @@ func forward() -> Vector3:
 	return quaternion * Vector3.FORWARD
 
 func floor_check():
-	var angle_check = ray.get_collision_normal().angle_to(quaternion * Vector3.UP) < (floor_angle * PI / 180)
-	return ray.is_colliding() && angle_check
+	var angle_check = floor_ray.get_collision_normal().angle_to(quaternion * Vector3.UP) < (floor_angle * PI / 180)
+	return floor_ray.is_colliding() && angle_check
 
 func jump():
-	velocity += ray.get_collision_normal() * jump_force
+	velocity += floor_ray.get_collision_normal() * jump_force
 
 func fall(delta):
 	var input = roller_input.input()
@@ -58,9 +58,9 @@ func get_velocity() -> Vector3:
 func race(delta):
 	var input = roller_input.input()
 	var right = quaternion * Vector3.RIGHT
-	var point = ray.get_collision_point()
+	var point = floor_ray.get_collision_point()
 	global_position = point
-	var normal = ray.get_collision_normal()
+	var normal = floor_ray.get_collision_normal()
 	var up = quaternion * Vector3.UP
 	var axis_lerp_weight = delta * max(velocity.length() * 0.5, 5)
 	var axis_lerp = lerp(up, normal, axis_lerp_weight)
@@ -97,3 +97,6 @@ func rotate_around_point(axis : Vector3, radian : float, point : Vector3):
 	var point_to_end_position = point_to_start_position.rotated(axis, radian)
 	move(point_to_end_position - point_to_start_position)
 	rotate(axis, radian)
+
+func get_floor_normal():
+	return floor_ray.get_collision_normal()

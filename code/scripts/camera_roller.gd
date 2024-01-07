@@ -8,9 +8,10 @@ var distance = 2
 func _process(delta):
 	var roller_velocity = roller.get_velocity()
 	var lerp_direction = lerp(forward(), roller_velocity, delta * camera_lerp)
-	var lerp_axis = lerp(quaternion * Vector3.UP, roller.quaternion * Vector3.UP, delta * camera_lerp)
-	
-	lerp_direction = lerp(lerp_direction, lerp_direction.slide(roller_velocity.cross(roller.basis.x).normalized()), delta * camera_lerp)
+	var axis
+	if roller.floor_check(): axis = roller.get_floor_normal()
+	else: axis = Vector3.UP 
+	var lerp_axis = lerp(basis.y, axis, delta * camera_lerp)
 	
 	var global_pos = -lerp_direction * distance + camera_pivot.global_position
 	var look_point = camera_pivot.global_position
