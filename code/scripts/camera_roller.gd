@@ -2,18 +2,18 @@ extends Camera3D
 
 @export var roller : Node3D
 @onready var raycast = $raycast
+@onready var camera_pivot = roller.get_node("camera_pivot")
 var camera_lerp = 2
 var distance = 2
-var height = 1
 func _process(delta):
 	var roller_velocity = roller.get_velocity()
 	var lerp_direction = lerp(forward(), roller_velocity, delta * camera_lerp)
 	var lerp_axis = lerp(quaternion * Vector3.UP, roller.quaternion * Vector3.UP, delta * camera_lerp)
-	var slide_lerp_direction = lerp_direction.slide(lerp_axis.normalized())
-	var local_pos = -slide_lerp_direction * distance + lerp_axis * height
-	var global_pos = roller.global_position + local_pos
-	var look_point = roller.global_position + Vector3.UP * height
 	
+	lerp_direction = lerp(lerp_direction, lerp_direction.slide(roller_velocity.cross(roller.basis.x).normalized()), delta * camera_lerp)
+	
+	var global_pos = -lerp_direction * distance + camera_pivot.global_position
+	var look_point = camera_pivot.global_position
 	
 	if roller_velocity.length() > 0.01:
 		if raycast.is_colliding():
@@ -25,7 +25,7 @@ func _process(delta):
 			var final_pos = look_point + ray_vector.normalized() * look_point.distance_to(collision_point)
 			global_position = final_pos
 		else: global_position = global_pos
-		look_at_direction(slide_lerp_direction, lerp_axis)
+		look_at_direction(lerp_direction, lerp_axis)
 
 func forward() -> Vector3:
 	return quaternion * Vector3.FORWARD

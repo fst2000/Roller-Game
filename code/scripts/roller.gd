@@ -5,9 +5,9 @@ extends Node3D
 @onready var anim_tree = $AnimationTree
 @onready var state = IdleState.new(self)
 @onready var collision_rays = $collision_rays
-
+@onready var mass_center = $mass_center
 var gravity = 10
-var jump_force = 5
+var jump_force = 6
 var move_speed = 15
 var move_smoothness = 0.5
 var race_rotation_speed = 2
@@ -49,7 +49,8 @@ func fall(delta):
 	var input = roller_input.input()
 	velocity.y -= gravity * delta
 	move(velocity * delta)
-	rotate(quaternion * Vector3.UP, input.x * delta * fall_rotation_speed)
+	rotate(transform.basis.y.normalized(), input.x * delta * fall_rotation_speed)
+	rotate_around_point(transform.basis.x.normalized(), input.z * delta * fall_rotation_speed, mass_center.global_position)
 
 func get_velocity() -> Vector3:
 	return velocity
@@ -61,7 +62,8 @@ func race(delta):
 	global_position = point
 	var normal = ray.get_collision_normal()
 	var up = quaternion * Vector3.UP
-	var axis_lerp = lerp(up, normal, delta * velocity.length() * 0.5)
+	var axis_lerp_weight = delta * max(velocity.length() * 0.5, 5)
+	var axis_lerp = lerp(up, normal, axis_lerp_weight)
 	var floor_forward = axis_lerp.cross(right)
 	look_at_direction(floor_forward, axis_lerp)
 	
@@ -78,13 +80,20 @@ func race(delta):
 func collide():
 	var multi_rays = collision_rays.get_colliding_rays()
 	if multi_rays:
-		var multi_ray = multi_rays[0]
-		var point = multi_ray.get_collision_point()
-		var normal = multi_ray.get_collision_normal()
-		var ray_length = multi_ray.get_ray_length()
-		var ray_position = multi_ray.global_position
-		var from_ray_to_point = point - ray_position
-		var ray_vector = from_ray_to_point.normalized() * ray_length
-		var move_vector = from_ray_to_point - ray_vector
-		move(move_vector)
-		velocity = velocity.slide(normal.normalized())
+		for multi_ray in multi_rays:
+			var point = multi_ray.get_collision_point()
+			var normal = multi_ray.get_collision_normal()
+			var ray_length = multi_ray.get_ray_length()
+			var ray_position = multi_ray.global_position
+			var from_ray_to_point = point - ray_position
+			var ray_vector = from_ray_to_point.normalized() * ray_length
+			var move_vector = from_ray_to_point - ray_vector
+			move(move_vector)
+			velocity = velocity.slide(normal.normalized())
+
+func rotate_around_point(axis : Vector3, radian : float, point : Vector3):
+	var start_position = global_position
+	var point_to_start_position = start_position - point
+	var point_to_end_position = point_to_start_position.rotated(axis, radian)
+	move(point_to_end_position - point_to_start_position)
+	rotate(axis, radian)

@@ -1478,32 +1478,38 @@ graph_offset = Vector2(39.528, -41.5667)
 script = ExtResource("2_d4v8r")
 
 [node name="Skeleton3D" parent="Armature" index="0"]
-bones/0/position = Vector3(0, 0.792016, 0)
-bones/2/rotation = Quaternion(0.000640295, 0, 0, 1)
-bones/3/rotation = Quaternion(-0.000279256, 0, 0, 1)
-bones/4/rotation = Quaternion(0.0230102, -0.0808506, 0.97695, -0.196218)
+bones/0/position = Vector3(0, 0.766221, 0)
+bones/2/rotation = Quaternion(0.0587724, -8.89251e-26, -1.60204e-17, 0.998271)
+bones/3/rotation = Quaternion(-0.0256258, 1.2929e-26, 6.98514e-18, 0.999672)
+bones/4/rotation = Quaternion(0.0181053, -0.00316566, 0.990838, -0.133798)
 bones/4/scale = Vector3(0.999999, 1, 1)
 bones/5/scale = Vector3(1, 1, 1)
 bones/6/rotation = Quaternion(-0.115014, -0.0105412, -0.0906583, 0.989162)
-bones/7/rotation = Quaternion(0.0674008, -0.0987689, 0.974885, 0.187889)
+bones/7/rotation = Quaternion(0.0713699, -0.0267106, 0.988327, 0.13192)
 bones/8/rotation = Quaternion(0.201129, 0.20674, -0.0498504, 0.956201)
 bones/9/rotation = Quaternion(-0.125699, -0.116515, 0.0751451, 0.982332)
-bones/10/rotation = Quaternion(-0.606008, 0.304317, -0.490751, 0.547092)
+bones/10/rotation = Quaternion(-0.644386, 0.267621, -0.511688, 0.501319)
 bones/10/scale = Vector3(1, 1, 1)
-bones/11/rotation = Quaternion(0.0773307, 0.0292071, 0.212078, 0.97375)
+bones/11/rotation = Quaternion(0.124129, 0.052469, 0.33858, 0.931237)
 bones/11/scale = Vector3(1, 1, 1)
-bones/12/rotation = Quaternion(-0.0185952, -0.0121335, -0.0890369, 0.995781)
+bones/12/rotation = Quaternion(-0.0405731, -0.0235519, -0.147293, 0.98798)
 bones/12/scale = Vector3(1, 1, 1)
-bones/13/rotation = Quaternion(0.488413, -0.54826, 0.607893, -0.302208)
+bones/13/rotation = Quaternion(0.509202, -0.502346, 0.646352, -0.265688)
 bones/13/scale = Vector3(1, 1, 1)
-bones/14/rotation = Quaternion(-0.0767746, -0.0392583, 0.21228, 0.973397)
-bones/15/rotation = Quaternion(0.0180186, 0.0185785, -0.0891554, 0.995681)
+bones/14/rotation = Quaternion(-0.123242, -0.06208, 0.338904, 0.930646)
+bones/15/rotation = Quaternion(0.039619, 0.0299461, -0.147553, 0.987807)
 bones/15/scale = Vector3(1, 1, 1)
 
 [node name="AnimationPlayer" parent="." index="1"]
 playback_default_blend_time = 0.1
 
-[node name="collision_rays" type="Node3D" parent="." index="2"]
+[node name="camera_pivot" type="Node3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0303, 0)
+
+[node name="mass_center" type="Node3D" parent="." index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="collision_rays" type="Node3D" parent="." index="4"]
 script = ExtResource("3_mcgfe")
 
 [node name="rays_up" type="Node3D" parent="collision_rays" index="0"]
@@ -1587,11 +1593,11 @@ transform = Transform3D(0.5, 0, 0.866025, -7.57103e-08, -1, 4.37114e-08, 0.86602
 target_position = Vector3(0, 0, 0.5)
 hit_back_faces = false
 
-[node name="floor_ray" type="RayCast3D" parent="." index="3"]
+[node name="floor_ray" type="RayCast3D" parent="." index="5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 target_position = Vector3(0, -0.75, 0)
 
-[node name="AnimationTree" type="AnimationTree" parent="." index="4"]
+[node name="AnimationTree" type="AnimationTree" parent="." index="6"]
 libraries = {
 "": SubResource("AnimationLibrary_3c50v")
 }
@@ -1600,7 +1606,7 @@ anim_player = NodePath("../AnimationPlayer")
 parameters/conditions/is_crash_end = false
 parameters/conditions/is_crash_start = false
 parameters/conditions/is_falling = false
-parameters/conditions/is_idle = true
+parameters/conditions/is_idle = false
 parameters/conditions/is_jump = false
 parameters/conditions/is_not_jump = false
 parameters/conditions/is_on_floor = false

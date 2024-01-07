@@ -27,10 +27,8 @@ func is_colliding():
 	var is_colliding = false
 	for r in rays:
 		if r.is_colliding():
-			var normal_dot = r.get_collision_normal().dot(r.get_collision_point().direction_to(r.global_position))
-			if normal_dot > 0.1:
-				is_colliding = true
-	return is_colliding
+				return true
+	return false
 
 func get_ray_length():
 	return rays[0].target_position.length()
