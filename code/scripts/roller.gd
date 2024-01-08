@@ -14,6 +14,7 @@ var race_rotation_speed = 2
 var fall_rotation_speed = 5
 var side_friction = 2
 var floor_angle = 45
+var crash_velocity = 10
 var velocity := Vector3.ZERO
 var roller_input := KeyInput.new()
 
@@ -39,8 +40,10 @@ func forward() -> Vector3:
 	return quaternion * Vector3.FORWARD
 
 func floor_check():
-	var angle_check = floor_ray.get_collision_normal().angle_to(quaternion * Vector3.UP) < (floor_angle * PI / 180)
-	return floor_ray.is_colliding() && angle_check
+	var normal = floor_ray.get_collision_normal()
+	var normal_velocity_dot = normal.dot(velocity.normalized())
+	var angle_check = normal.angle_to(quaternion * Vector3.UP) < (floor_angle * PI / 180)
+	return floor_ray.is_colliding() && angle_check && normal_velocity_dot < 0.1
 
 func jump():
 	velocity += floor_ray.get_collision_normal() * jump_force
@@ -57,23 +60,14 @@ func get_velocity() -> Vector3:
 
 func race(delta):
 	var input = roller_input.input()
-	var right = quaternion * Vector3.RIGHT
-	var point = floor_ray.get_collision_point()
-	global_position = point
-	var normal = floor_ray.get_collision_normal()
-	var up = quaternion * Vector3.UP
-	var axis_lerp_weight = delta * max(velocity.length() * 0.5, 5)
-	var axis_lerp = lerp(up, normal, axis_lerp_weight)
-	var floor_forward = axis_lerp.cross(right)
-	look_at_direction(floor_forward, axis_lerp)
-	
-	var slope_velocity = (Vector3.DOWN * gravity).slide(normal) * delta
-	velocity = velocity.slide(normal) + slope_velocity
+	var right = basis.x
+	var up = basis.y
 	if velocity.length() < move_speed:
 		var move_velocity = forward() * max(0, up.dot(Vector3.UP)) * move_speed * -input.z * delta
 		velocity += move_velocity * move_smoothness
 	var side_friction_velocity = -right * right.dot(velocity) * delta * side_friction
 	velocity += side_friction_velocity
+	slide(delta)
 	move((velocity) * delta)
 	rotate(quaternion * Vector3.UP, input.x * delta * race_rotation_speed)
 
@@ -97,6 +91,19 @@ func rotate_around_point(axis : Vector3, radian : float, point : Vector3):
 	var point_to_end_position = point_to_start_position.rotated(axis, radian)
 	move(point_to_end_position - point_to_start_position)
 	rotate(axis, radian)
+
+func slide(delta):
+	var point = floor_ray.get_collision_point()
+	global_position = point
+	var normal = floor_ray.get_collision_normal()
+	var right = basis.x
+	var up = basis.y
+	var axis_lerp_weight = delta * clamp(velocity.length(), 2, 10)
+	var axis_lerp = lerp(up, normal, axis_lerp_weight)
+	var floor_forward = axis_lerp.cross(right)
+	look_at_direction(floor_forward, axis_lerp)
+	var slope_velocity = Vector3.DOWN * gravity * delta
+	velocity = velocity.slide(normal) + slope_velocity
 
 func get_floor_normal():
 	return floor_ray.get_collision_normal()

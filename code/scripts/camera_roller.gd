@@ -27,6 +27,7 @@ func _process(delta):
 			global_position = final_pos
 		else: global_position = global_pos
 		look_at_direction(lerp_direction, lerp_axis)
+		rotation_degrees.z = clamp(rotation_degrees.z, -90, 90)
 
 func forward() -> Vector3:
 	return quaternion * Vector3.FORWARD

@@ -37,4 +37,4 @@ current = true
 roller = NodePath("../roller_base")
 
 [node name="roller_base" parent="." instance=ExtResource("3_7104o")]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -6.46968, 0, 7.74393)
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, -36.747, 40.2897, -35.1272)
