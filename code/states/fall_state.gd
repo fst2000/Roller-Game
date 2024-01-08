@@ -18,9 +18,7 @@ func next_state():
 	var colliding_rays = roller.collision_rays.get_colliding_rays()
 	if colliding_rays:
 		var ray = colliding_rays.front()
-		roller.global_position = ray.get_collision_point()
-		roller.set_axis(ray.get_collision_normal())
-		return CrashFloorBackState.new(roller)
+		return CrashFloorBackState.new(roller, ray)
 	
 	return self
 

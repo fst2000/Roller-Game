@@ -22,13 +22,14 @@ func _ready():
 	anim_tree.active = true
 
 func _physics_process(delta):
-	collide()
 	var next_state = state.next_state()
 	if state != next_state:
 		state.exit()
 		state = next_state
 	state.update(delta)
 	
+	collide()
+
 func move(move_velocity : Vector3):
 	global_position += move_velocity 
 
