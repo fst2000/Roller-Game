@@ -15,11 +15,11 @@ func update(delta):
 	var race_slide_blend = abs(0.5 - slide_blend) * 2 - accelerate_blend * 0.7
 	var race_blend = roller.forward().dot(roller.velocity)
 	
-	roller.anim_tree.set_blend("accelerate_blend", accelerate_blend)
-	roller.anim_tree.set_blend("accelerate_back_blend", accelerate_blend)
-	roller.anim_tree.set_blend("slide_blend", slide_blend)
-	roller.anim_tree.set_blend("race_slide_blend", race_slide_blend)
-	roller.anim_tree.set_blend("race_blend", race_blend)
+	roller.anim_tree.set_blend2("race/accelerate_blend", accelerate_blend)
+	roller.anim_tree.set_blend2("race/accelerate_back_blend", accelerate_blend)
+	roller.anim_tree.set_blend2("race/slide_blend", slide_blend)
+	roller.anim_tree.set_blend2("race/race_slide_blend", race_slide_blend)
+	roller.anim_tree.set_blend2("race/race_blend", race_blend)
 	
 	roller.race(delta)
 

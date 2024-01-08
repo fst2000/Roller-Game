@@ -22,13 +22,12 @@ func _ready():
 	anim_tree.active = true
 
 func _physics_process(delta):
+	collide()
 	var next_state = state.next_state()
 	if state != next_state:
 		state.exit()
 		state = next_state
 	state.update(delta)
-	
-	collide()
 	
 func move(move_velocity : Vector3):
 	global_position += move_velocity 
@@ -52,8 +51,6 @@ func fall(delta):
 	var input = roller_input.input()
 	velocity.y -= gravity * delta
 	move(velocity * delta)
-	rotate(transform.basis.y.normalized(), input.x * delta * fall_rotation_speed)
-	rotate_around_point(transform.basis.x.normalized(), input.z * delta * fall_rotation_speed, mass_center.global_position)
 
 func get_velocity() -> Vector3:
 	return velocity
@@ -68,7 +65,6 @@ func race(delta):
 	var side_friction_velocity = -right * right.dot(velocity) * delta * side_friction
 	velocity += side_friction_velocity
 	slide(delta)
-	move((velocity) * delta)
 	rotate(quaternion * Vector3.UP, input.x * delta * race_rotation_speed)
 
 func collide():
@@ -104,6 +100,20 @@ func slide(delta):
 	look_at_direction(floor_forward, axis_lerp)
 	var slope_velocity = Vector3.DOWN * gravity * delta
 	velocity = velocity.slide(normal) + slope_velocity
+	move((velocity) * delta)
+	
+func set_axis(axis : Vector3):
+	var look_dir = axis.cross(basis.x)
+	look_at_direction(look_dir, axis)
+
+func flip(delta):
+	var input = roller_input.input()
+	var rot_x = input.z
+	var rot_y = input.x
+	var rot_z = roller_input.turn()
+	rotate(basis.y.normalized(), rot_y * delta * fall_rotation_speed)
+	rotate_around_point(basis.x.normalized(), rot_x * delta * fall_rotation_speed, mass_center.global_position)
+	rotate_around_point(basis.z.normalized(), rot_z * delta * fall_rotation_speed, mass_center.global_position)
 
 func get_floor_normal():
 	return floor_ray.get_collision_normal()

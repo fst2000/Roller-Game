@@ -24,7 +24,6 @@ func get_collision_normal():
 	return normal
 
 func is_colliding():
-	var is_colliding = false
 	for r in rays:
 		if r.is_colliding():
 				return true

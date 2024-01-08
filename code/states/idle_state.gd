@@ -19,4 +19,4 @@ func next_state():
 	return self
 
 func exit():
-	roller.anim_tree["parameters/conditions/is_idle"] = false
+	roller.anim_tree.set_condition("is_idle", true)

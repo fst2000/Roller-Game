@@ -9,10 +9,19 @@ func _init(roller):
 	
 func update(delta):
 	roller.fall(delta)
+	roller.flip(delta)
 
 func next_state():
 	if roller.floor_check():
 		return LandState.new(roller)
+
+	var colliding_rays = roller.collision_rays.get_colliding_rays()
+	if colliding_rays:
+		var ray = colliding_rays.front()
+		roller.global_position = ray.get_collision_point()
+		roller.set_axis(ray.get_collision_normal())
+		return CrashFloorBackState.new(roller)
+	
 	return self
 
 func exit():

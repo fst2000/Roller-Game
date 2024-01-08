@@ -1,6 +1,7 @@
 class_name JumpState
 
 var roller
+var time = 0.0
 
 func _init(roller):
 	self.roller = roller
@@ -10,11 +11,16 @@ func _init(roller):
 	
 func update(delta):
 	roller.fall(delta)
+	roller.flip(delta)
+	time += delta
 
 func next_state():
-	if roller.floor_check():
-		exit()
+	
+	if time > 0.25:
 		return FallState.new(roller)
+	
+	if roller.floor_check():
+		return LandState.new(roller)
 	return self
 
 func exit():
