@@ -12,6 +12,7 @@ func _init(roller):
 func update(delta):
 	roller.fall(delta)
 	roller.flip(delta)
+	roller.collide()
 	time += delta
 
 func next_state():

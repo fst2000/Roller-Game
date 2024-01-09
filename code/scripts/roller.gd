@@ -27,8 +27,6 @@ func _physics_process(delta):
 		state.exit()
 		state = next_state
 	state.update(delta)
-	
-	collide()
 
 func move(move_velocity : Vector3):
 	global_position += move_velocity 

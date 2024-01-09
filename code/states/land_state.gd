@@ -10,6 +10,7 @@ func _init(roller):
 	
 func update(delta):
 	roller.race(delta)
+	roller.collide()
 	time += delta
 
 func next_state():

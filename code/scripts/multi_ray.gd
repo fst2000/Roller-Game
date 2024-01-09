@@ -1,6 +1,11 @@
 extends Node3D
 
 @onready var rays = get_children()
+
+func _ready():
+	for r in rays:
+		r.set_hit_back_faces(false)
+
 func get_collision_point():
 	var point := Vector3.ZERO
 	var collisions_count = 0
