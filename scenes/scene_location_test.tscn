@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://d2iyn3mpci8ub"]
+[gd_scene load_steps=8 format=3 uid="uid://d2iyn3mpci8ub"]
 
 [ext_resource type="PackedScene" uid="uid://udi68deqk1ym" path="res://prefabs/locations/location_test.tscn" id="1_f1pep"]
 [ext_resource type="PackedScene" uid="uid://c6s2t3vrpr64d" path="res://prefabs/camera/camera_roller.tscn" id="2_2fuaw"]
 [ext_resource type="PackedScene" uid="uid://dd11h1ylkasg2" path="res://prefabs/characters/roller_base.tscn" id="3_7104o"]
+[ext_resource type="PackedScene" uid="uid://q2bdu6rt4tlx" path="res://ui/speed_blur.tscn" id="4_by8pn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vos38"]
 
@@ -18,7 +19,6 @@ ambient_light_energy = 0.5
 fog_enabled = true
 fog_light_color = Color(0.862745, 0.803922, 0.678431, 1)
 fog_sun_scatter = 1.0
-fog_density = 0.02
 
 [node name="SceneLocationTest" type="Node3D"]
 
@@ -34,7 +34,14 @@ shadow_enabled = true
 [node name="Camera3D" parent="." node_paths=PackedStringArray("roller") instance=ExtResource("2_2fuaw")]
 transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -5.2534, 2.71334, 13.1019)
 current = true
+fov = 70.0
+far = 4000.0
 roller = NodePath("../roller_base")
 
 [node name="roller_base" parent="." instance=ExtResource("3_7104o")]
 transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, -22.178, 1.39273, 5.2719)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="speed_blur" parent="CanvasLayer" node_paths=PackedStringArray("roller") instance=ExtResource("4_by8pn")]
+roller = NodePath("../../roller_base")

@@ -32,6 +32,9 @@ func exit():
 
 func next_state():
 	if time > 1.0:
+		
+		
+		
 		if roller.floor_check():
 			return RaceState.new(roller)
 		else:

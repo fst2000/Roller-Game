@@ -8,7 +8,7 @@ extends Node3D
 @onready var mass_center = $mass_center
 var gravity = 10
 var jump_force = 6
-var move_speed = 15
+var move_speed = 18
 var move_smoothness = 0.5
 var race_rotation_speed = 2
 var fall_rotation_speed = 5

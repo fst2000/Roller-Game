@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://q2bdu6rt4tlx"]
+
+[ext_resource type="Shader" path="res://shaders/speed_blur_shader.gdshader" id="1_51dxu"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vwbwm"]
+shader = ExtResource("1_51dxu")
+shader_parameter/blur_mul = 0.1
+shader_parameter/blur_start_speed = 10.0
+shader_parameter/blur_max_speed = 15.0
+shader_parameter/speed = 20.0
+
+[sub_resource type="GDScript" id="GDScript_rmd64"]
+script/source = "extends ColorRect
+
+@export var roller : Node3D
+
+func _process(delta):
+	material.set_shader_parameter(\"speed\", roller.velocity.length())
+	print(roller.velocity.length())
+"
+
+[node name="speed_blur" type="ColorRect"]
+material = SubResource("ShaderMaterial_vwbwm")
+offset_right = 1152.0
+offset_bottom = 648.0
+script = SubResource("GDScript_rmd64")
