@@ -36,3 +36,7 @@ func is_colliding():
 
 func get_ray_length():
 	return rays[0].target_position.length()
+
+func force_raycast_update():
+	for r in rays:
+		r.force_raycast_update()

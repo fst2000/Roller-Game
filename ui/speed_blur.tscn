@@ -16,7 +16,6 @@ script/source = "extends ColorRect
 
 func _process(delta):
 	material.set_shader_parameter(\"speed\", roller.velocity.length())
-	print(roller.velocity.length())
 "
 
 [node name="speed_blur" type="ColorRect"]

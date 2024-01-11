@@ -67,16 +67,15 @@ func race(delta):
 	rotate(quaternion * Vector3.UP, input.x * delta * race_rotation_speed)
 
 func collide():
+	collision_rays.force_raycast_update()
 	var multi_rays = collision_rays.get_colliding_rays()
 	if multi_rays:
 		for multi_ray in multi_rays:
 			var point = multi_ray.get_collision_point()
 			var normal = multi_ray.get_collision_normal()
-			var ray_length = multi_ray.get_ray_length()
-			var ray_position = multi_ray.global_position
-			var from_ray_to_point = point - ray_position
-			var ray_vector = from_ray_to_point.normalized() * ray_length
-			var move_vector = from_ray_to_point - ray_vector
+			var from_start_to_point = (point - multi_ray.global_position)
+			var ray_vector = from_start_to_point.normalized() * multi_ray.get_ray_length()
+			var move_vector = from_start_to_point - ray_vector
 			move(move_vector)
 			velocity = velocity.slide(normal.normalized())
 
