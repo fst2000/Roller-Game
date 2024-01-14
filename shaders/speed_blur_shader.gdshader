@@ -20,7 +20,7 @@ void fragment()
 	if (speed_mul > 0.01)
 	{
 		vec4 mix_col = screen_col;
-		float loop_count = 20.0;
+		float loop_count = 5.0;
 		float step_length = 1.0 / loop_count;
 		vec2 motion_dir = normalize(motion_vec2);
 		for(float i = 1.0; i < loop_count; i++)

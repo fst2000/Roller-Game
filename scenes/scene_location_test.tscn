@@ -7,18 +7,19 @@
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vos38"]
 
-[sub_resource type="Sky" id="Sky_84mhd"]
+[sub_resource type="Sky" id="Sky_vr2ja"]
 sky_material = SubResource("ProceduralSkyMaterial_vos38")
 
 [sub_resource type="Environment" id="Environment_x2y4p"]
 background_mode = 2
-sky = SubResource("Sky_84mhd")
+sky = SubResource("Sky_vr2ja")
 ambient_light_source = 2
-ambient_light_color = Color(0.517647, 0.760784, 0.827451, 1)
+ambient_light_color = Color(0.721569, 0.831373, 0.905882, 1)
 ambient_light_energy = 0.5
 fog_enabled = true
-fog_light_color = Color(0.862745, 0.803922, 0.678431, 1)
+fog_light_color = Color(0.905882, 0.945098, 0.964706, 1)
 fog_sun_scatter = 1.0
+fog_aerial_perspective = 0.758
 
 [node name="SceneLocationTest" type="Node3D"]
 
@@ -28,20 +29,23 @@ fog_sun_scatter = 1.0
 environment = SubResource("Environment_x2y4p")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.707107, 0.5, -0.5, 0, 0.707107, 0.707107, 0.707107, -0.5, 0.5, 0, 6.03217, 2.44398)
+transform = Transform3D(0.514528, -0.856092, 0.0486473, 0.229877, 0.192372, 0.954018, -0.826086, -0.479686, 0.295777, 0, 6.03217, 2.44398)
+light_color = Color(0.964706, 0.960784, 0.937255, 1)
+light_bake_mode = 1
 shadow_enabled = true
 
 [node name="Camera3D" parent="." node_paths=PackedStringArray("roller") instance=ExtResource("2_2fuaw")]
 transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -5.2534, 2.71334, 13.1019)
 current = true
 fov = 70.0
-far = 4000.0
+far = 200.0
 roller = NodePath("../roller_base")
 
 [node name="roller_base" parent="." instance=ExtResource("3_7104o")]
-transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, -22.178, 1.39273, 5.2719)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.3558, 20.2331, -32.5668)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="speed_blur" parent="CanvasLayer" node_paths=PackedStringArray("roller") instance=ExtResource("4_by8pn")]
 roller = NodePath("../../roller_base")
+metadata/_edit_use_anchors_ = true

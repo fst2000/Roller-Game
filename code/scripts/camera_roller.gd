@@ -4,14 +4,15 @@ extends Camera3D
 @onready var raycast = $raycast
 @onready var camera_pivot = roller.get_node("camera_pivot")
 var camera_lerp = 5
-var distance_min = 2.5
-var distance_max = 4.0
+var distance_min = 2.0
+var distance_max = 3.5
+
 func _process(delta):
 	var velocity = roller.get_velocity()
-	var distance = clamp(velocity.length() * 0.15, distance_min, distance_max)
-	var velocity_direction = velocity.normalized()
+	var distance = clamp(distance_min + velocity.length() * 0.05, distance_min, distance_max)
 	var axis = basis.x.cross(velocity).normalized()
 	if roller.floor_check(): axis = roller.get_floor_normal()
+	axis.y = abs(axis.y)
 	var lerp_axis = lerp(basis.y, axis, delta * camera_lerp)
 	var look_point = camera_pivot.global_position
 	var direction = forward()

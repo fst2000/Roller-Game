@@ -6,9 +6,9 @@ extends Node3D
 @onready var state = IdleState.new(self)
 @onready var collision_rays = $collision_rays
 @onready var mass_center = $mass_center
-var gravity = 10
-var jump_force = 6
-var move_speed = 18
+var gravity = 20
+var jump_force = 8 
+var move_speed = 24
 var move_smoothness = 0.5
 var race_rotation_speed = 2
 var fall_rotation_speed = 5
@@ -92,7 +92,7 @@ func slide(delta):
 	var normal = floor_ray.get_collision_normal()
 	var right = basis.x
 	var up = basis.y
-	var axis_lerp_weight = delta * clamp(velocity.length(), 2, 10)
+	var axis_lerp_weight = delta * clamp(velocity.length() * 1.5, 2, 15)
 	var axis_lerp = lerp(up, normal, axis_lerp_weight)
 	var floor_forward = axis_lerp.cross(right)
 	look_at_direction(floor_forward, axis_lerp)

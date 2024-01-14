@@ -18,8 +18,13 @@ config/icon="res://icon.svg"
 
 [display]
 
+window/size/viewport_width=800
+window/size/viewport_height=450
+window/size/mode=3
+window/size/borderless=true
 window/stretch/mode="viewport"
 window/stretch/aspect="keep_width"
+window/ios/allow_high_refresh_rate=false
 
 [input]
 
@@ -67,3 +72,12 @@ turn_r={
 [rendering]
 
 renderer/rendering_method="mobile"
+driver/threads/thread_model=2
+textures/vram_compression/import_etc2_astc=true
+lights_and_shadows/directional_shadow/size=512
+lights_and_shadows/directional_shadow/size.mobile=256
+lights_and_shadows/directional_shadow/soft_shadow_filter_quality.mobile=2
+environment/ssao/quality=0
+anti_aliasing/screen_space_roughness_limiter/enabled=false
+lights_and_shadows/positional_shadow/atlas_size=2048
+lights_and_shadows/positional_shadow/atlas_size.mobile=1024

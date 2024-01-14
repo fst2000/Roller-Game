@@ -5,8 +5,8 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vwbwm"]
 shader = ExtResource("1_51dxu")
 shader_parameter/blur_mul = 0.1
-shader_parameter/blur_start_speed = 10.0
-shader_parameter/blur_max_speed = 15.0
+shader_parameter/blur_start_speed = 15.0
+shader_parameter/blur_max_speed = 24.0
 shader_parameter/speed = 20.0
 
 [sub_resource type="GDScript" id="GDScript_rmd64"]
@@ -20,6 +20,9 @@ func _process(delta):
 
 [node name="speed_blur" type="ColorRect"]
 material = SubResource("ShaderMaterial_vwbwm")
-offset_right = 1152.0
-offset_bottom = 648.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = SubResource("GDScript_rmd64")

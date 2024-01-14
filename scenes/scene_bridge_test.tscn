@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=3 uid="uid://c66dfwcr80eh5"]
+
+[ext_resource type="PackedScene" uid="uid://ctgcauhvfpqvi" path="res://prefabs/locations/location_bridge_test.tscn" id="1_s63uh"]
+[ext_resource type="PackedScene" uid="uid://c6s2t3vrpr64d" path="res://prefabs/camera/camera_roller.tscn" id="2_7tbcn"]
+[ext_resource type="PackedScene" uid="uid://dd11h1ylkasg2" path="res://prefabs/characters/roller_base.tscn" id="3_qe3x4"]
+[ext_resource type="PackedScene" uid="uid://q2bdu6rt4tlx" path="res://ui/speed_blur.tscn" id="4_u05ns"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5poxj"]
+
+[sub_resource type="Sky" id="Sky_84mhd"]
+sky_material = SubResource("ProceduralSkyMaterial_5poxj")
+
+[sub_resource type="Environment" id="Environment_iwbju"]
+background_mode = 2
+sky = SubResource("Sky_84mhd")
+ambient_light_source = 2
+ambient_light_color = Color(0.721569, 0.831373, 0.905882, 1)
+ambient_light_energy = 0.7
+fog_enabled = true
+fog_light_color = Color(0.905882, 0.945098, 0.964706, 1)
+fog_sun_scatter = 1.0
+fog_aerial_perspective = 0.758
+
+[node name="SceneBridgeTest" type="Node3D"]
+
+[node name="location_bridge_test" parent="." instance=ExtResource("1_s63uh")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_iwbju")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.514528, -0.856092, 0.0486473, 0.229877, 0.192372, 0.954018, -0.826086, -0.479686, 0.295777, 0, 6.03217, 2.44398)
+shadow_enabled = true
+
+[node name="Camera3D" parent="." node_paths=PackedStringArray("roller") instance=ExtResource("2_7tbcn")]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -5.2534, 2.71334, 13.1019)
+current = true
+fov = 70.0
+far = 4000.0
+roller = NodePath("../roller_base")
+
+[node name="roller_base" parent="." instance=ExtResource("3_qe3x4")]
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, -22.178, 1.39273, 5.2719)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="speed_blur" parent="CanvasLayer" node_paths=PackedStringArray("roller") instance=ExtResource("4_u05ns")]
+roller = NodePath("../../roller_base")
+metadata/_edit_use_anchors_ = true
