@@ -71,13 +71,14 @@ func collide():
 	var multi_rays = collision_rays.get_colliding_rays()
 	if multi_rays:
 		for multi_ray in multi_rays:
-			var point = multi_ray.get_collision_point()
 			var normal = multi_ray.get_collision_normal()
-			var from_start_to_point = (point - multi_ray.global_position)
-			var ray_vector = from_start_to_point.normalized() * multi_ray.get_ray_length()
-			var move_vector = from_start_to_point - ray_vector
-			move(move_vector)
-			velocity = velocity.slide(normal.normalized())
+			if normal.dot(velocity) < 0:
+				var point = multi_ray.get_collision_point()
+				var from_start_to_point = (point - multi_ray.global_position)
+				var ray_vector = from_start_to_point.normalized() * multi_ray.get_ray_length()
+				var move_vector = from_start_to_point - ray_vector
+				move(move_vector)
+				velocity = velocity.slide(normal.normalized())
 
 func rotate_around_point(axis : Vector3, radian : float, point : Vector3):
 	var start_position = global_position
@@ -115,3 +116,17 @@ func flip(delta):
 
 func get_floor_normal():
 	return floor_ray.get_collision_normal()
+
+func get_crash_state():
+	collision_rays.force_raycast_update()
+	var colliding_rays = collision_rays.get_colliding_rays()
+	if colliding_rays:
+		var ray = colliding_rays.front()
+		var normal = ray.get_collision_normal()
+		var is_crash_on_floor = normal.angle_to(Vector3.UP) < 45 * PI / 180
+		var wall_crash_limit = 8.0
+		var is_wall_crash_speed_enouth = velocity.dot(-normal) > wall_crash_limit
+		if is_crash_on_floor:
+			return CrashFloorState.new(self, ray)
+		elif is_wall_crash_speed_enouth:
+			return CrashWallState.new(self, ray)

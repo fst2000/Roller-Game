@@ -1,4 +1,4 @@
-class_name CrashFloorState
+class_name CrashWallState
 
 var roller
 var anim_tree
@@ -8,15 +8,13 @@ func _init(roller, ray):
 	self.roller = roller
 	self.anim_tree = roller.anim_tree
 	var normal = ray.get_collision_normal()
-	var point = ray.get_collision_point()
+	var bounce = 0.3
+	roller.velocity = roller.velocity.dot(-normal) * normal * bounce
 	var forward_back_blend = round(-roller.forward().dot(normal))
-	roller.global_position = point
-	roller.set_axis(normal)
 	anim_tree.set_condition("is_crash_start", true)
 	anim_tree.set_condition("is_crash_end", false)
-	anim_tree.set_blend2("crash/up_floor_low_blend", 0)
-	anim_tree.set_blend2("crash/floor_wall_blend", 0)
-	anim_tree.set_blend2("crash/floor_forward_back_blend", forward_back_blend)
+	anim_tree.set_blend2("crash/floor_wall_blend", 1)
+	anim_tree.set_blend2("crash/wall_forward_back_blend", forward_back_blend)
 
 func update(delta):
 	time += delta
@@ -33,9 +31,6 @@ func exit():
 	anim_tree.set_condition("is_crash_end", true)
 
 func next_state():
-	if roller.floor_check():
-		if time > 1.0:
-			return RaceState.new(roller)
-	else:
+	if time > 0.2:
 		return FallState.new(roller)
 	return self

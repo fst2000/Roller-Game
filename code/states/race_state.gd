@@ -2,6 +2,8 @@ class_name RaceState
 
 var roller
 
+var crash_state
+
 func _init(roller):
 	self.roller = roller
 	roller.anim_tree.set_condition("is_race", true)
@@ -23,7 +25,11 @@ func update(delta):
 	roller.anim_tree.set_blend2("race/race_blend", race_blend)
 	
 	roller.race(delta)
-	roller.collide()
+	
+	crash_state = roller.get_crash_state()
+
+	if !crash_state:
+		roller.collide()
 
 func next_state():
 	if !roller.floor_check():
@@ -32,13 +38,8 @@ func next_state():
 	if roller.roller_input.is_jump():
 		return JumpState.new(roller)
 	
-	var colliding_rays = roller.collision_rays.get_colliding_rays()
-	if colliding_rays:
-		var ray = colliding_rays.front()
-		var normal = ray.get_collision_normal()
-		var is_floor = normal.angle_to(Vector3.UP) < 45 * PI / 180
-		if is_floor:
-			return CrashFloorState.new(roller, ray)
+	if crash_state:
+		return crash_state
 	
 	return self
 

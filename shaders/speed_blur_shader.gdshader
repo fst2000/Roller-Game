@@ -22,7 +22,7 @@ void fragment()
 		for(float i = 1.0; i < loop_count; i++)
 		{
 			vec2 blur_uv = SCREEN_UV - motion_dir * ((loop_count - i) * step_length * blur_mul);
-			mix_col = mix(mix_col, textureLod(screen_texture, blur_uv, i * step_length), step_length);
+			mix_col = mix(mix_col, textureLod(screen_texture, blur_uv, i * step_length * 5.0), step_length);
 		}
 		COLOR = mix(screen_col, mix_col, clamp((length(motion_vec2) - 0.2) * 4.0 * speed_mul, 0.0, 1.0));
 	}

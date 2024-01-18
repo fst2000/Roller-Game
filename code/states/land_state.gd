@@ -5,7 +5,7 @@ var time = 0.0
 
 func _init(roller):
 	self.roller = roller
-	roller.anim_tree.set_condition("is_falling", false)
+	roller.anim_tree.set_condition("is_fall", false)
 	roller.anim_tree.set_condition("is_on_floor", true)
 	
 func update(delta):
