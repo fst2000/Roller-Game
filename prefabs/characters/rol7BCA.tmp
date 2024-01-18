@@ -1410,7 +1410,7 @@ libraries = {
 "": SubResource("AnimationLibrary_3c50v"),
 "roller_crash_animations": ExtResource("3_uytl0")
 }
-playback_default_blend_time = 0.2
+playback_default_blend_time = 0.1
 
 [node name="camera_pivot" type="Node3D" parent="." index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0303, 0)

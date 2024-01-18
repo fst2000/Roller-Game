@@ -3,8 +3,8 @@ class_name IdleState
 var roller
 
 func _init(roller):
+	roller.anim_player.play("idle")
 	self.roller = roller
-	roller.anim_tree.set_condition("is_idle", true)
 	
 func update(delta):
 	roller.velocity.x = 0
@@ -19,4 +19,4 @@ func next_state():
 	return self
 
 func exit():
-	roller.anim_tree.set_condition("is_idle", true)
+	pass

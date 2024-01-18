@@ -1,23 +1,20 @@
 class_name JumpState
 
 var roller
-var time = 0.0
 
 func _init(roller):
 	self.roller = roller
-	roller.anim_tree.set_condition("is_jump", true)
-	roller.anim_tree.set_condition("is_not_jump", false)
+	roller.anim_player.play("jump")
 	roller.jump()
 	
 func update(delta):
 	roller.fall(delta)
 	roller.flip(delta)
 	roller.collide()
-	time += delta
 
 func next_state():
 	
-	if time > 0.25:
+	if !roller.anim_player.is_playing():
 		return FallState.new(roller)
 	
 	if roller.floor_check():
@@ -25,5 +22,4 @@ func next_state():
 	return self
 
 func exit():
-	roller.anim_tree.set_condition("is_jump", false)
-	roller.anim_tree.set_condition("is_not_jump", true)
+	pass

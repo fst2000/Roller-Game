@@ -4,9 +4,8 @@ var roller
 var time = 0.0
 
 func _init(roller):
+	roller.anim_player.play("land")
 	self.roller = roller
-	roller.anim_tree.set_condition("is_fall", false)
-	roller.anim_tree.set_condition("is_on_floor", true)
 	
 func update(delta):
 	roller.race(delta)

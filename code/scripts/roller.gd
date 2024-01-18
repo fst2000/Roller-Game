@@ -2,8 +2,8 @@ extends Node3D
 
 @onready var floor_ray = $floor_ray
 @onready var anim_player = $AnimationPlayer
-@onready var anim_tree = $AnimationTree
 @onready var state = IdleState.new(self)
+@onready var state_machine = StateMachine.new(state)
 @onready var collision_rays = $collision_rays
 @onready var mass_center = $mass_center
 var gravity = 20
@@ -18,15 +18,8 @@ var crash_velocity = 10
 var velocity := Vector3.ZERO
 var roller_input := KeyInput.new()
 
-func _ready():
-	anim_tree.active = true
-
 func _physics_process(delta):
-	var next_state = state.next_state()
-	if state != next_state:
-		state.exit()
-		state = next_state
-	state.update(delta)
+	state_machine.update(delta)
 
 func move(move_velocity : Vector3):
 	global_position += move_velocity 
@@ -47,7 +40,7 @@ func jump():
 	velocity += floor_ray.get_collision_normal() * jump_force
 
 func fall(delta):
-	var input = roller_input.input()
+	var input = roller_input.acceleration()
 	velocity.y -= gravity * delta
 	move(velocity * delta)
 
@@ -55,7 +48,7 @@ func get_velocity() -> Vector3:
 	return velocity
 
 func race(delta):
-	var input = roller_input.input()
+	var input = roller_input.acceleration()
 	var right = basis.x
 	var up = basis.y
 	if velocity.length() < move_speed:
@@ -106,7 +99,7 @@ func set_axis(axis : Vector3):
 	look_at_direction(look_dir, axis)
 
 func flip(delta):
-	var input = roller_input.input()
+	var input = roller_input.acceleration()
 	var rot_x = input.z
 	var rot_y = input.x
 	var rot_z = roller_input.turn()

@@ -1,6 +1,6 @@
 class_name KeyInput
 
-func input():
+func acceleration():
 	return Vector3(
 		Input.get_axis("right", "left"),
 		0,

@@ -4,9 +4,8 @@ var roller
 var crash_state
 
 func _init(roller):
+	roller.anim_player.play("fall")
 	self.roller = roller
-	roller.anim_tree.set_condition("is_fall", true)
-	roller.anim_tree.set_condition("is_on_floor", false)
 	
 func update(delta):
 	roller.fall(delta)
@@ -25,5 +24,4 @@ func next_state():
 	return self
 
 func exit():
-	roller.anim_tree.set_condition("is_fall", false)
-	roller.anim_tree.set_condition("is_on_floor", true)
+	pass
